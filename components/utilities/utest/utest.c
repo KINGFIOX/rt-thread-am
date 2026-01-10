@@ -144,6 +144,20 @@ static void utest_tc_list(void)
 }
 MSH_CMD_EXPORT_ALIAS(utest_tc_list, utest_list, output all utest testcase);
 
+static void csr_read(void)
+{
+// mvendorid
+  uintptr_t mvendorid;
+  asm volatile ("csrr %0, mvendorid\n" : "=r" (mvendorid));
+  LOG_I("mvendorid: %c%c%c%c\n", mvendorid >> 24, mvendorid >> 16, mvendorid >> 8, mvendorid);
+
+  // marchid
+  uintptr_t marchid;
+  asm volatile ("csrr %0, marchid\n" : "=r" (marchid));
+  LOG_I("marchid: %d\n", marchid);
+}
+MSH_CMD_EXPORT(csr_read, csr read testcase);
+
 static const char *file_basename(const char *file)
 {
     char *end_ptr = RT_NULL;

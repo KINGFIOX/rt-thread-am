@@ -52,6 +52,23 @@ void rt_hw_board_init() {
 #endif
 }
 
+/* Auto-run csr_read on system startup */
+static int auto_csr_read(void)
+{
+  // mvendorid
+  uintptr_t mvendorid;
+  asm volatile ("csrr %0, mvendorid\n" : "=r" (mvendorid));
+  rt_kprintf("mvendorid: %c%c%c%c\n", mvendorid >> 24, mvendorid >> 16, mvendorid >> 8, mvendorid);
+
+  // marchid
+  uintptr_t marchid;
+  asm volatile ("csrr %0, marchid\n" : "=r" (marchid));
+  rt_kprintf("marchid: %d\n", marchid);
+  
+  return 0;
+}
+INIT_APP_EXPORT(auto_csr_read);
+
 int main() {
   ioe_init();
 #ifdef __ISA_NATIVE__
