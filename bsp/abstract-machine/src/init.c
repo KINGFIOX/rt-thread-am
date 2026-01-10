@@ -10,9 +10,9 @@
 Area am_apps_heap = {}, am_apps_data = {}, am_apps_bss = {};
 uint8_t * am_apps_data_content = NULL;
 
+// 板级初始化
 void rt_hw_board_init() {
-  int rt_hw_uart_init(void);
-  rt_hw_uart_init();
+  int rt_hw_uart_init(void); rt_hw_uart_init();
 
 #ifdef RT_USING_HEAP
   /* initialize memory system */
@@ -28,8 +28,7 @@ void rt_hw_board_init() {
   extern char __am_apps_bss_start, __am_apps_bss_end;
   am_apps_data = RANGE(&__am_apps_data_start, &__am_apps_data_end);
   am_apps_bss  = RANGE(&__am_apps_bss_start,  &__am_apps_bss_end);
-  printf("am-apps.data.size = %ld, am-apps.bss.size = %ld\n",
-      am_apps_data.end - am_apps_data.start, am_apps_bss.end - am_apps_bss.start);
+  printf("am-apps.data.size = %ld, am-apps.bss.size = %ld\n", am_apps_data.end - am_apps_data.start, am_apps_bss.end - am_apps_bss.start);
 
   uint32_t data_size = am_apps_data.end - am_apps_data.start;
   if (data_size != 0) {

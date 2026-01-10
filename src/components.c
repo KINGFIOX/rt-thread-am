@@ -211,8 +211,8 @@ void rt_application_init(void)
     rt_thread_t tid;
 
 #ifdef RT_USING_HEAP
-    tid = rt_thread_create("main", main_thread_entry, RT_NULL,
-                           RT_MAIN_THREAD_STACK_SIZE, RT_MAIN_THREAD_PRIORITY, 20);
+    // 创建 main 线程 (第一个创建的线程)
+    tid = rt_thread_create("main", main_thread_entry, RT_NULL, RT_MAIN_THREAD_STACK_SIZE, RT_MAIN_THREAD_PRIORITY, 20);
     RT_ASSERT(tid != RT_NULL);
 #else
     rt_err_t result;
@@ -235,6 +235,7 @@ void rt_application_init(void)
  *
  * @return Normally never returns. If 0 is returned, the scheduler failed.
  */
+// 系统入口
 int rtthread_startup(void)
 {
     rt_hw_interrupt_disable();

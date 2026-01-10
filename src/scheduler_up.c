@@ -165,6 +165,7 @@ static struct rt_thread* _scheduler_get_highest_priority_thread(rt_ubase_t *high
 /**
  * @brief This function will initialize the system scheduler.
  */
+// 初始化调度器
 void rt_system_scheduler_init(void)
 {
     rt_base_t offset;
