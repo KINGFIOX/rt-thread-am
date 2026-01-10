@@ -12,6 +12,7 @@
 
 #define DBG_TAG    "stdlib"
 #define DBG_LVL    DBG_INFO
+#include <stddef.h>
 #include <rtdbg.h>
 
 void __rt_libc_exit(int status)

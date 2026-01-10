@@ -8,6 +8,7 @@
 
 #include <time.h>
 #include <string.h>
+#include <sys/types.h>
 #include <rtthread.h>
 
 static struct rt_device random_dev;

@@ -15,6 +15,10 @@
 #include <stddef.h>
 #include <sys/types.h>
 
+#ifndef useconds_t
+typedef unsigned long useconds_t;    /* microseconds (unsigned) */
+#endif /* useconds_t */
+
 #ifdef __cplusplus
 extern "C" {
 #endif

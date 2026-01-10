@@ -50,6 +50,9 @@ struct timezone
 
 #ifndef _TIMEVAL_DEFINED
 #define _TIMEVAL_DEFINED
+#ifndef suseconds_t
+typedef long suseconds_t;    /* microseconds (signed) */
+#endif /* suseconds_t */
 struct timeval
 {
     time_t      tv_sec;     /* seconds */
