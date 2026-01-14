@@ -34,17 +34,9 @@ lib_sym = [
   "strlen", "strcat", "strcpy", "strncpy", "strcmp", "strncmp",
   "srand", "rand", "malloc", "free", "abs", "atoi",
   "printf", "sprintf", "snprintf", "vsprintf", "vsnprintf",
-  # libgcc 软浮点函数
-  "__muldf3", "__divdf3", "__adddf3", "__subdf3",
-  "__mulsf3", "__divsf3", "__addsf3", "__subsf3",
-  "__floatsidf", "__floatdidf", "__floatsisf", "__floatdisf",
-  "__floatunsidf", "__floatundidf", "__floatunsisf", "__floatundisf",
-  "__fixdfsi", "__fixdfdi", "__fixsfsi", "__fixsfdi",
-  "__fixunsdfsi", "__fixunsdfdi", "__fixunssfsi", "__fixunssfdi",
-  "__extendsfdf2", "__truncdfsf2",
-  "__eqdf2", "__nedf2", "__ltdf2", "__ledf2", "__gtdf2", "__gedf2",
-  "__eqsf2", "__nesf2", "__ltsf2", "__lesf2", "__gtsf2", "__gesf2",
-  "__unorddf2", "__unordsf2",
+  # libgcc 软浮点函数, 已经放在 klib 中
+  "__floatsidf", "__subdf3", "__fixdfsi", "__divdf3",
+  "__muldf3", "__fixunsdfsi", "__fixdfdi"
 ]
 am_init_sym = [ "trm_init", "ioe_init", "cte_init", "vme_init", "mpe_init" ]
 
