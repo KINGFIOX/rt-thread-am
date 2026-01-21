@@ -50,12 +50,15 @@ def read_lib_symbols(lib):
     lib_sym = list(set(lib_sym + res.stdout.strip().split('\n')))
 
 def integrate(app_dir):
-    app_name = app_dir.name.replace("-", "_")
-    os.system(f"make -j ARCH={ARCH} -C {str(app_dir)}")
+    # 1. 生成 .o
+    app_name = app_dir.name.replace("-", "_") # for example: typing-game -> typing_game
+    os.system(f"make -j ARCH={ARCH} -C {str(app_dir)}") # compile the application
     dst = Path("build") / ARCH / "am-apps" / app_name
     dst.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(app_dir / "build" / ARCH / "", dst, dirs_exist_ok=True)
-    objs = dst.rglob("*.o")
+    shutil.copytree(app_dir / "build" / ARCH / "", dst, dirs_exist_ok=True) # copy .o
+    objs = dst.rglob("*.o") # get all .o files
+
+    # 2. 生成符号重定义规则
     redefine_sym_file = "redefine_sym.txt"
     redefine_sym_fp = open(redefine_sym_file, "w")
     for f in lib_sym:
@@ -66,6 +69,10 @@ def integrate(app_dir):
         else:
             redefine_sym_fp.write(f"__am_{app_name}_{f} {f}\n")
     redefine_sym_fp.close()
+
+    # 3. rename sections, functions
+    #   .data -> __am_apps.data
+    #   main -> __am_typing_game_main
     for obj in objs:
         os.system(f"{CROSS_COMPILE}objcopy --prefix-symbols=__am_{app_name}_ --set-section-flags .text*=readonly,noload --set-section-flags .*rodata*=readonly,noload {str(obj)}")
         os.system(f"{CROSS_COMPILE}objcopy --redefine-syms=redefine_sym.txt --prefix-alloc-sections=__am_apps {str(obj)}")
@@ -93,7 +100,7 @@ static void am_app_start_thread(void *args) {
   const char *mainargs = ((void **)args)[1];
   fn(mainargs);
 }
-static void am_app_start_wrapper(const char *app_name, void *app_main, int argc, char *argv[]) {
+void am_app_start_wrapper(const char *app_name, void *app_main, int argc, char *argv[]) {
   memcpy(am_apps_data.start, am_apps_data_content, am_apps_data.end - am_apps_data.start);
   memset(am_apps_bss.start, 0, am_apps_bss.end - am_apps_bss.start);
   heap = am_apps_heap;
