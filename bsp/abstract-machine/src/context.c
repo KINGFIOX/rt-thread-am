@@ -10,7 +10,7 @@ static Context *ev_handler(Event e, Context *c) {
   switch (e.event) {
   case EVENT_YIELD:
     if (from_sp_ptr) {
-      *from_sp_ptr = c;
+      *from_sp_ptr = c; // save current context pointer
       from_sp_ptr = NULL;
     }
     c = to_sp_ptr;
@@ -31,6 +31,10 @@ void rt_hw_context_switch_to(rt_ubase_t to) {
   assert(0 && "should not reach here!");
 }
 
+// `from` provide a slot to save the context pointer of the current thread
+// however, the real state that we want to save is the context entering `yield()`.
+// so, we set the from_sp_ptr, use it in `ev_handler()`, save the context entering `yield()`
+//  and set the pointer to NULL, for protecting wrong usage.
 void rt_hw_context_switch(rt_ubase_t from, rt_ubase_t to) {
   from_sp_ptr = (Context **)from;
   to_sp_ptr = *(Context **)to;

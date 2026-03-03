@@ -27,7 +27,7 @@ SECTIONS {
     *(__am_apps.sdata*)
     __am_apps_data_end = .;
     . = ALIGN(8);
-  }
+  } > dram AT> irom
 }
 INSERT BEFORE .data;
 
@@ -40,6 +40,6 @@ SECTIONS {
     *(__am_apps.scommon*)
     __am_apps_bss_end = .;
     . = ALIGN(8);
-  }
+  } > dram
 }
 INSERT BEFORE .bss;
