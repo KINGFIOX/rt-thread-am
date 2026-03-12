@@ -64,20 +64,20 @@ static int auto_csr_read(void)
   asm volatile ("csrr %0, marchid\n" : "=r" (marchid));
   rt_kprintf("marchid: %d\n", marchid);
 
+  // seg gpio
+  volatile uint8_t * seg_gpio = (uint8_t *)GPIO_SEGS;
+  seg_gpio[0] = SEG_TWO;
+  seg_gpio[1] = SEG_ONE;
+  seg_gpio[2] = SEG_ZERO;
+  seg_gpio[3] = SEG_ONE;
+  seg_gpio[4] = SEG_ONE;
+  seg_gpio[5] = SEG_ONE;
+  seg_gpio[6] = SEG_ZERO;
+  seg_gpio[7] = SEG_TWO;
+
   return 0;
 }
 INIT_APP_EXPORT(auto_csr_read);
-
-// /* Auto-run typing-game on system startup */
-// static int auto_run_typing_game(void)
-// {
-//     extern int __am_typing_game_main(const char *);
-//     extern void am_app_start_wrapper(const char *app_name, void *app_main, int argc, char *argv[]);
-//     char *argv[] = { "typing_game", "" };
-//     am_app_start_wrapper("typing_game", __am_typing_game_main, 1, argv);
-//     return 0;
-// }
-// INIT_APP_EXPORT(auto_run_typing_game);
 
 int main() {
   ioe_init();
