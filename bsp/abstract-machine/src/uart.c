@@ -65,7 +65,7 @@ const static char lut[256] = {
     [AM_KEY_8] = '8',
     [AM_KEY_9] = '9',
     [AM_KEY_0] = '0',
-    [AM_KEY_MINUS] = '-',
+    [AM_KEY_MINUS] = '_',
     [AM_KEY_EQUALS] = '=',
     [AM_KEY_BACKSPACE] = '\b',
 
@@ -132,6 +132,7 @@ const static char lut[256] = {
 
 static bool shift_down = false;
 
+__attribute__((unused))
 static char non_func_key(int keycode) {
   if (shift_down) {
     if (keycode == AM_KEY_MINUS) {
@@ -190,15 +191,10 @@ static int _uart_getc(struct rt_serial_device *serial) {
   AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
   if (ev.keycode) {
     if (ev.keydown) {
-      if (ev.keycode == AM_KEY_LSHIFT || ev.keycode == AM_KEY_RSHIFT) {
-        shift_down = true;
-      } else if (lut[ev.keycode]) { // no function key
-        return non_func_key(ev.keycode);
+      if (lut[ev.keycode]) {
+        return lut[ev.keycode];
       }
     } else { // release
-      if (ev.keycode == AM_KEY_LSHIFT || ev.keycode == AM_KEY_RSHIFT) {
-        shift_down = false;
-      }
     }
   }
   return -1;
