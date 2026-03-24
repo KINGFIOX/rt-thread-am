@@ -20,3 +20,8 @@ long strtol(const char *restrict nptr, char **restrict endptr, int base) {
 char *strncat(char *restrict dst, const char *restrict src, size_t sz) {
   assert(0);
 }
+
+__attribute__((weak))
+char *__strcat_chk(char *dest, const char *src, size_t destlen) {
+  return strcat(dest, src);
+}
